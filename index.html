@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Velum — Intelligent Ship Routing</title>
+<title>Velum — Minimum-Time Ocean Routing</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -25,10 +25,11 @@
 <header class="hero">
   <div class="hero-glow"></div>
   <div class="hero-content">
-    <p class="hero-eyebrow">MARITIME ROUTE INTELLIGENCE</p>
-    <h1>Optimize every<br>voyage.</h1>
-    <p class="hero-sub">Velum builds data-driven routing systems for tankers and commercial vessels —
-    turning ocean currents, weather, and vessel performance data into faster, safer, more fuel-efficient passages.</p>
+    <p class="hero-eyebrow">MINIMUM-TIME OCEAN ROUTING</p>
+    <h1>Route by time,<br>not distance.</h1>
+    <p class="hero-sub">Velum computes minimum-time ocean routes between 30 U.S. ports — Brownsville, TX to
+    Bucksport, ME — using live NOAA current forecasts, real charted sea buoys, and federal shipping
+    regulations verified against primary sources, not simplified assumptions.</p>
     <div class="hero-actions">
       <a href="#contact" class="btn-primary">Request Access</a>
       <a href="#platform" class="btn-secondary">See the Platform →</a>
@@ -38,43 +39,43 @@
 
 <section class="stats-strip">
   <div class="stat">
-    <span class="stat-num">100%</span>
-    <span class="stat-label">Data-driven route planning</span>
+    <span class="stat-num">30 ports</span>
+    <span class="stat-label">Brownsville, TX to Bucksport, ME</span>
   </div>
   <div class="stat">
-    <span class="stat-num">Real-time</span>
-    <span class="stat-label">Current &amp; weather integration</span>
+    <span class="stat-num">3 live models</span>
+    <span class="stat-label">NOAA AMSEAS, USEAST &amp; GoMOFS currents, stitched</span>
   </div>
   <div class="stat">
-    <span class="stat-num">Built by</span>
-    <span class="stat-label">Working mariners</span>
+    <span class="stat-num">144 headings</span>
+    <span class="stat-label">Any-angle routing, not an 8-point compass</span>
   </div>
 </section>
 
 <section id="platform" class="section">
   <div class="section-inner">
     <p class="section-eyebrow">01 — PLATFORM</p>
-    <h2>One system. Every leg of the voyage.</h2>
+    <h2>Built on real charts, real currents, real rules.</h2>
     <div class="feature-grid">
       <div class="feature-card">
         <div class="feature-index">01</div>
-        <h3>Current &amp; Weather Fusion</h3>
-        <p>Ingests live ocean current, wind, and sea-state data to continuously re-evaluate the fastest, safest route — not just the shortest one.</p>
+        <h3>Live Current Data</h3>
+        <p>Stitches three real NOAA ocean current models (AMSEAS, USEAST, GoMOFS) by priority into one continuous field, so a route from the Gulf to Maine has real data the whole way — not extrapolation past a model's edge.</p>
       </div>
       <div class="feature-card">
         <div class="feature-index">02</div>
-        <h3>Fuel &amp; ETA Modeling</h3>
-        <p>Simulates vessel-specific performance curves to estimate fuel burn and arrival time under changing conditions, before you commit to a track.</p>
+        <h3>Federal Regulatory Compliance</h3>
+        <p>Routes obey traffic separation schemes, particularly sensitive sea areas, and safety fairways verified section-by-section against 33 CFR Parts 166 and 167 — not inferred from summaries.</p>
       </div>
       <div class="feature-card">
         <div class="feature-index">03</div>
-        <h3>Voyage Risk Layer</h3>
-        <p>Flags high-traffic zones, weather windows, and regulatory boundaries so route decisions account for operational risk, not just distance.</p>
+        <h3>Minimum-Time Optimization</h3>
+        <p>Runs a time-dependent search over a current-aware mesh to find the fastest track, then compares it honestly against the shortest safe rhumb line — so you see the real benefit in hours, not just nautical miles.</p>
       </div>
       <div class="feature-card">
         <div class="feature-index">04</div>
-        <h3>Bridge-Ready Output</h3>
-        <p>Delivers route recommendations in a format built for the bridge team — clear, chartable, and grounded in how voyages are actually planned.</p>
+        <h3>Chart-Style Output</h3>
+        <p>Plots the result as an annotated navigational chart: colorized current streamlines, TSS and fairway overlays, numbered waypoints, and a route summary — console output plus a saved chart image.</p>
       </div>
     </div>
   </div>
@@ -83,22 +84,24 @@
 <section id="approach" class="section section-dark">
   <div class="section-inner">
     <p class="section-eyebrow">02 — APPROACH</p>
-    <h2>Built from the bridge, not the boardroom.</h2>
-    <p class="approach-text">Most routing tools are built by software teams that have never stood a watch.
-    Velum starts from operational reality — voyage planning, current behavior, and the judgment calls that
-    happen on deck — and layers data science on top of that experience, not the other way around.</p>
+    <h2>Verified against primary sources, not plausible-sounding answers.</h2>
+    <p class="approach-text">Every regulatory constraint in Velum — traffic separation schemes, precautionary areas,
+    particularly sensitive sea areas, and safety fairways — was checked directly against 33 CFR Parts 166 and 167,
+    not inferred from a summary. Sea buoy positions come from NOAA's own ENC chart data, not estimates. Where the
+    published regulation itself contained an error, it was caught by cross-checking two independent sources rather
+    than trusted at face value.</p>
     <div class="approach-list">
       <div class="approach-item">
         <span class="approach-num">→</span>
-        <p>Route models grounded in real oceanographic data, not generic APIs.</p>
+        <p>Real charted sea buoys for all 30 ports, pulled directly from NOAA ENC chart data.</p>
       </div>
       <div class="approach-item">
         <span class="approach-num">→</span>
-        <p>Designed around how deck officers actually plan and adjust a voyage.</p>
+        <p>Every traffic scheme and safety fairway confirmed against the federal register, not assumed.</p>
       </div>
       <div class="approach-item">
         <span class="approach-num">→</span>
-        <p>Focused on tankers and commercial vessels first — depth over breadth.</p>
+        <p>Two routes compared honestly: fastest current-optimized track vs. shortest safe distance.</p>
       </div>
     </div>
   </div>
@@ -108,9 +111,10 @@
   <div class="section-inner about-inner">
     <p class="section-eyebrow">03 — ABOUT</p>
     <h2>Founded on deck, not in a lab.</h2>
-    <p class="about-text">Velum was founded by a licensed deck officer working aboard oil tankers, combining
-    hands-on navigation and voyage-planning experience with a background in data analysis and oceanography.
-    The goal is simple: give mariners routing tools that reflect the way voyages actually work at sea.</p>
+    <p class="about-text">Velum was founded by a licensed deck officer working aboard oil tankers, who built the
+    routing engine from the ground up — starting with live NOAA current models, real navigational chart data, and
+    the federal regulations that govern where a tanker can and can't go. The goal is simple: give mariners a
+    routing tool that reflects the way voyages actually work at sea, not a generic shortest-path approximation.</p>
   </div>
 </section>
 
