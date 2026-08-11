@@ -27,4 +27,51 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+
+  const form = document.getElementById('tryit-form');
+  const successBox = document.getElementById('tryit-success');
+  const errorMsg = document.getElementById('tryit-error');
+  const submitBtn = document.getElementById('tryit-submit-btn');
+  const resetBtn = document.getElementById('tryit-reset-btn');
+
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorMsg.style.display = 'none';
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending...';
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (response.ok) {
+          form.reset();
+          form.style.display = 'none';
+          successBox.style.display = 'block';
+        } else {
+          errorMsg.style.display = 'block';
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Send Request';
+        }
+      } catch (err) {
+        errorMsg.style.display = 'block';
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send Request';
+      }
+    });
+  }
+
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      successBox.style.display = 'none';
+      form.style.display = 'flex';
+      form.style.flexDirection = 'column';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send Request';
+    });
+  }
 });

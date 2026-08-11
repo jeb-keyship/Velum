@@ -89,7 +89,7 @@
     the Velum team — not an instant automated result — so allow some time for a reply. You'll get the route
     summary and chart back by email.</p>
 
-    <form action="https://formspree.io/f/xbgroabq" method="POST" class="tryit-form">
+    <form id="tryit-form" action="https://formspree.io/f/xbgroabq" method="POST" class="tryit-form">
       <div class="tryit-row">
         <div class="tryit-field">
           <label for="departure">Departure port</label>
@@ -180,8 +180,15 @@
       </div>
       <input type="hidden" name="_subject" value="New Velum route request">
       <input type="text" name="_gotcha" style="display:none">
-      <button type="submit" class="btn-primary tryit-submit">Send Request</button>
+      <button type="submit" class="btn-primary tryit-submit" id="tryit-submit-btn">Send Request</button>
+      <p class="tryit-error" id="tryit-error" style="display:none">Something went wrong — please try again or email jeb@velumtech.com directly.</p>
     </form>
+
+    <div id="tryit-success" class="tryit-success" style="display:none">
+      <p class="tryit-success-title">Request sent.</p>
+      <p class="tryit-success-text">Thanks — we'll run your route on live data and reply by email shortly.</p>
+      <button type="button" class="btn-secondary" id="tryit-reset-btn">Send another request</button>
+    </div>
   </div>
 </section>
 
