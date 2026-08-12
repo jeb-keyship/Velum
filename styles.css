@@ -342,8 +342,28 @@ a{color:inherit;text-decoration:none;}
 .approach-num{color:var(--accent);font-weight:700;}
 .approach-item p{color:var(--fg-dim);font-size:16px;}
 
-.about-inner{max-width:720px;}
+.about-inner{max-width:1000px;}
+.about-grid{
+  display:grid;
+  grid-template-columns:280px 1fr;
+  gap:48px;
+  align-items:start;
+}
+.about-photo-wrap{
+  border-radius:8px;
+  overflow:hidden;
+  border:1px solid var(--line);
+}
+.about-photo{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  aspect-ratio:4/5;
+}
+.about-copy{display:flex;flex-direction:column;gap:20px;}
 .about-text{color:var(--fg-dim);font-size:17px;}
+.about-note{color:var(--fg-dim);font-size:13px;font-style:italic;opacity:0.8;}
 
 .contact-section{text-align:center;}
 .contact-inner{max-width:600px;margin:0 auto;}
@@ -377,4 +397,6 @@ a{color:inherit;text-decoration:none;}
   .section{padding:80px 20px;}
   .tryit-row{grid-template-columns:1fr;}
   .tryit-row-date{grid-template-columns:1fr;}
+  .about-grid{grid-template-columns:1fr;}
+  .about-photo-wrap{max-width:280px;}
 }
