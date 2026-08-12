@@ -56,7 +56,8 @@ a{color:inherit;text-decoration:none;}
 }
 .logo-main{color:var(--fg);}
 .logo-tech{color:var(--accent);}
-.logo.small{font-size:13px;color:var(--fg-dim);}
+.logo.small{font-size:13px;}
+.logo.small .logo-main{color:var(--fg-dim);}
 .nav-links{
   display:flex;
   gap:36px;
