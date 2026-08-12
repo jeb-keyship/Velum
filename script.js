@@ -36,48 +36,72 @@ document.addEventListener('DOMContentLoaded', () => {
   const monthField = document.getElementById('departure-month');
   const dayField = document.getElementById('departure-day');
   const yearField = document.getElementById('departure-year');
-  const timeField = document.getElementById('departure-time-gmt');
-  const easternDisplay = document.getElementById('eastern-time-display');
+  const timeField = document.getElementById('departure-time-eastern');
+  const gmtDisplay = document.getElementById('gmt-time-display');
   const nowBtn = document.getElementById('use-now-btn');
 
   const MAX_AHEAD_MS = 7 * 24 * 60 * 60 * 1000;
 
-  function nowGMT() {
-    const now = new Date();
-    return new Date(now.getTime() + now.getTimezoneOffset() * 60000);
+  function partsInZone(date, timeZone) {
+    const fmt = new Intl.DateTimeFormat('en-US', {
+      timeZone, year: 'numeric', month: '2-digit', day: '2-digit',
+      hour: '2-digit', minute: '2-digit', hour12: false
+    });
+    const parts = {};
+    fmt.formatToParts(date).forEach(p => { if (p.type !== 'literal') parts[p.type] = p.value; });
+    let hour = parseInt(parts.hour, 10);
+    if (hour === 24) hour = 0;
+    return {
+      year: parseInt(parts.year, 10),
+      month: parseInt(parts.month, 10),
+      day: parseInt(parts.day, 10),
+      hour, minute: parseInt(parts.minute, 10)
+    };
+  }
+
+  function easternToUTC(year, month, day, hour, minute) {
+    for (const offsetHours of [4, 5]) {
+      const guess = new Date(Date.UTC(year, month - 1, day, hour + offsetHours, minute, 0));
+      const check = partsInZone(guess, 'America/New_York');
+      if (check.year === year && check.month === month && check.day === day &&
+          check.hour === hour && check.minute === minute) {
+        return guess;
+      }
+    }
+    return new Date(Date.UTC(year, month - 1, day, hour + 4, minute, 0));
   }
 
   function selectedUTCDate() {
     if (!monthField.value || !dayField.value || !yearField.value || !timeField.value) return null;
-    const [hh, mm] = timeField.value.replace(' GMT', '').split(':').map(Number);
-    return new Date(Date.UTC(
+    const [hh, mm] = timeField.value.replace(' ET', '').split(':').map(Number);
+    return easternToUTC(
       parseInt(yearField.value, 10),
-      parseInt(monthField.value, 10) - 1,
+      parseInt(monthField.value, 10),
       parseInt(dayField.value, 10),
-      hh, mm, 0
-    ));
+      hh, mm
+    );
   }
 
   function isDepartureInPast() {
     const selected = selectedUTCDate();
     if (!selected) return false;
-    return selected.getTime() < nowGMT().getTime();
+    return selected.getTime() < Date.now();
   }
 
   function isDepartureTooFarFuture() {
     const selected = selectedUTCDate();
     if (!selected) return false;
-    return selected.getTime() > (nowGMT().getTime() + MAX_AHEAD_MS);
+    return selected.getTime() > (Date.now() + MAX_AHEAD_MS);
   }
 
-  function updateEasternDisplay() {
+  function updateGMTDisplay() {
     const selected = selectedUTCDate();
     if (!selected) {
-      easternDisplay.textContent = 'Select a date and time above';
+      gmtDisplay.textContent = 'Select a date and time above';
       return;
     }
     const formatted = selected.toLocaleString('en-US', {
-      timeZone: 'America/New_York',
+      timeZone: 'UTC',
       weekday: 'short',
       month: 'short',
       day: 'numeric',
@@ -85,32 +109,36 @@ document.addEventListener('DOMContentLoaded', () => {
       hour: 'numeric',
       minute: '2-digit'
     });
-    easternDisplay.textContent = formatted + ' (Eastern)';
+    gmtDisplay.textContent = formatted + ' (GMT)';
   }
 
   function fillCurrentDateTime() {
-    const now = nowGMT();
-    const month = String(now.getUTCMonth() + 1).padStart(2, '0');
-    const day = String(now.getUTCDate()).padStart(2, '0');
-    const year = String(now.getUTCFullYear());
+    const now = new Date();
+    const et = partsInZone(now, 'America/New_York');
 
-    let hh = now.getUTCHours();
-    let mm = Math.ceil(now.getUTCMinutes() / 6) * 6;
-    if (mm === 60) { mm = 0; hh = (hh + 1) % 24; }
-    const timeLabel = `${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')} GMT`;
+    const scratch = new Date(Date.UTC(et.year, et.month - 1, et.day, et.hour, et.minute, 0));
+    let roundedMinutes = Math.round(scratch.getUTCMinutes() / 6) * 6;
+    scratch.setUTCMinutes(roundedMinutes);
+
+    const year = scratch.getUTCFullYear();
+    const month = String(scratch.getUTCMonth() + 1).padStart(2, '0');
+    const day = String(scratch.getUTCDate()).padStart(2, '0');
+    const hh = scratch.getUTCHours();
+    const mm = scratch.getUTCMinutes();
+    const timeLabel = `${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')} ET`;
 
     monthField.value = month;
     dayField.value = day;
-    yearField.value = year;
+    yearField.value = String(year);
 
     const timeOption = Array.from(timeField.options).find(o => o.text === timeLabel);
     if (timeOption) timeField.value = timeOption.value;
 
-    updateEasternDisplay();
+    updateGMTDisplay();
   }
 
   [monthField, dayField, yearField, timeField].forEach(field => {
-    if (field) field.addEventListener('change', updateEasternDisplay);
+    if (field) field.addEventListener('change', updateGMTDisplay);
   });
 
   fillCurrentDateTime();
@@ -128,13 +156,13 @@ document.addEventListener('DOMContentLoaded', () => {
       errorMsg.style.display = 'none';
 
       if (isDepartureInPast()) {
-        errorMsg.textContent = 'Departure date/time must be now or in the future (GMT). Please pick a valid date and time.';
+        errorMsg.textContent = 'Departure date/time must be now or in the future. Please pick a valid date and time.';
         errorMsg.style.display = 'block';
         return;
       }
 
       if (isDepartureTooFarFuture()) {
-        errorMsg.textContent = 'Departure date/time must be within the next 7 days (GMT). Please pick a valid date and time.';
+        errorMsg.textContent = 'Departure date/time must be within the next 7 days. Please pick a valid date and time.';
         errorMsg.style.display = 'block';
         return;
       }
