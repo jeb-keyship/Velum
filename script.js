@@ -37,23 +37,51 @@ document.addEventListener('DOMContentLoaded', () => {
   const dayField = document.getElementById('departure-day');
   const yearField = document.getElementById('departure-year');
   const timeField = document.getElementById('departure-time-gmt');
+  const easternDisplay = document.getElementById('eastern-time-display');
 
   function nowGMT() {
     const now = new Date();
     return new Date(now.getTime() + now.getTimezoneOffset() * 60000);
   }
 
-  function isDepartureInPast() {
-    if (!monthField.value || !dayField.value || !yearField.value || !timeField.value) return false;
+  function selectedUTCDate() {
+    if (!monthField.value || !dayField.value || !yearField.value || !timeField.value) return null;
     const [hh, mm] = timeField.value.replace(' GMT', '').split(':').map(Number);
-    const selected = new Date(Date.UTC(
+    return new Date(Date.UTC(
       parseInt(yearField.value, 10),
       parseInt(monthField.value, 10) - 1,
       parseInt(dayField.value, 10),
       hh, mm, 0
     ));
+  }
+
+  function isDepartureInPast() {
+    const selected = selectedUTCDate();
+    if (!selected) return false;
     return selected.getTime() < nowGMT().getTime();
   }
+
+  function updateEasternDisplay() {
+    const selected = selectedUTCDate();
+    if (!selected) {
+      easternDisplay.textContent = 'Select a date and time above';
+      return;
+    }
+    const formatted = selected.toLocaleString('en-US', {
+      timeZone: 'America/New_York',
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit'
+    });
+    easternDisplay.textContent = formatted + ' (Eastern)';
+  }
+
+  [monthField, dayField, yearField, timeField].forEach(field => {
+    if (field) field.addEventListener('change', updateEasternDisplay);
+  });
 
   if (form) {
     form.addEventListener('submit', async (e) => {
@@ -102,6 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
       form.style.flexDirection = 'column';
       submitBtn.disabled = false;
       submitBtn.textContent = 'Send Request';
+      easternDisplay.textContent = 'Select a date and time above';
     });
   }
 });

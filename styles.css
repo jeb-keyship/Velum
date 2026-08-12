@@ -277,6 +277,15 @@ a{color:inherit;text-decoration:none;}
   border-color:var(--accent);
 }
 .tryit-field textarea{resize:vertical;}
+.tryit-field-hint{
+  justify-content:center;
+}
+.tryit-time-hint{
+  color:var(--accent);
+  font-size:14px;
+  font-weight:600;
+  padding:10px 0;
+}
 .tryit-submit{
   width:100%;
 }
