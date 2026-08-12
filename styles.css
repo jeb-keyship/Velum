@@ -242,6 +242,9 @@ a{color:inherit;text-decoration:none;}
   gap:20px;
   margin-bottom:20px;
 }
+.tryit-row-date{
+  grid-template-columns:1fr 1fr 1fr;
+}
 .tryit-field{
   display:flex;
   flex-direction:column;
@@ -357,4 +360,5 @@ a{color:inherit;text-decoration:none;}
   .feature-grid{grid-template-columns:1fr;}
   .section{padding:80px 20px;}
   .tryit-row{grid-template-columns:1fr;}
+  .tryit-row-date{grid-template-columns:1fr;}
 }
