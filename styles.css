@@ -175,6 +175,33 @@ a{color:inherit;text-decoration:none;}
   margin-top:6px;
 }
 
+.coming-soon-strip{
+  position:relative;
+  z-index:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  padding:14px 24px;
+  background:var(--bg);
+  border-bottom:1px solid var(--line);
+}
+.coming-soon-pill{
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--bg);
+  background:var(--accent);
+  padding:4px 10px;
+  border-radius:999px;
+}
+.coming-soon-text{
+  font-size:14px;
+  color:var(--fg-dim);
+  font-weight:600;
+}
+
 .section{
   position:relative;
   z-index:1;
@@ -399,4 +426,5 @@ a{color:inherit;text-decoration:none;}
   .tryit-row-date{grid-template-columns:1fr;}
   .about-grid{grid-template-columns:1fr;}
   .about-photo-wrap{max-width:280px;}
+  .coming-soon-strip{flex-direction:column;gap:6px;text-align:center;}
 }
