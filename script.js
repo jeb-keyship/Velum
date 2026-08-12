@@ -38,6 +38,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const yearField = document.getElementById('departure-year');
   const timeField = document.getElementById('departure-time-gmt');
   const easternDisplay = document.getElementById('eastern-time-display');
+  const nowBtn = document.getElementById('use-now-btn');
+
+  const MAX_AHEAD_MS = 7 * 24 * 60 * 60 * 1000;
 
   function nowGMT() {
     const now = new Date();
@@ -61,6 +64,12 @@ document.addEventListener('DOMContentLoaded', () => {
     return selected.getTime() < nowGMT().getTime();
   }
 
+  function isDepartureTooFarFuture() {
+    const selected = selectedUTCDate();
+    if (!selected) return false;
+    return selected.getTime() > (nowGMT().getTime() + MAX_AHEAD_MS);
+  }
+
   function updateEasternDisplay() {
     const selected = selectedUTCDate();
     if (!selected) {
@@ -79,9 +88,39 @@ document.addEventListener('DOMContentLoaded', () => {
     easternDisplay.textContent = formatted + ' (Eastern)';
   }
 
+  function fillCurrentDateTime() {
+    const now = nowGMT();
+    const month = String(now.getUTCMonth() + 1).padStart(2, '0');
+    const day = String(now.getUTCDate()).padStart(2, '0');
+    const year = String(now.getUTCFullYear());
+
+    let hh = now.getUTCHours();
+    let mm = Math.ceil(now.getUTCMinutes() / 6) * 6;
+    if (mm === 60) { mm = 0; hh = (hh + 1) % 24; }
+    const timeLabel = `${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')} GMT`;
+
+    monthField.value = month;
+    dayField.value = day;
+    yearField.value = year;
+
+    const timeOption = Array.from(timeField.options).find(o => o.text === timeLabel);
+    if (timeOption) timeField.value = timeOption.value;
+
+    updateEasternDisplay();
+  }
+
   [monthField, dayField, yearField, timeField].forEach(field => {
     if (field) field.addEventListener('change', updateEasternDisplay);
   });
+
+  fillCurrentDateTime();
+
+  if (nowBtn) {
+    nowBtn.addEventListener('click', () => {
+      fillCurrentDateTime();
+      errorMsg.style.display = 'none';
+    });
+  }
 
   if (form) {
     form.addEventListener('submit', async (e) => {
@@ -90,6 +129,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (isDepartureInPast()) {
         errorMsg.textContent = 'Departure date/time must be now or in the future (GMT). Please pick a valid date and time.';
+        errorMsg.style.display = 'block';
+        return;
+      }
+
+      if (isDepartureTooFarFuture()) {
+        errorMsg.textContent = 'Departure date/time must be within the next 7 days (GMT). Please pick a valid date and time.';
         errorMsg.style.display = 'block';
         return;
       }
@@ -130,7 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
       form.style.flexDirection = 'column';
       submitBtn.disabled = false;
       submitBtn.textContent = 'Send Request';
-      easternDisplay.textContent = 'Select a date and time above';
+      fillCurrentDateTime();
     });
   }
 });
