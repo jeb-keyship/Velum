@@ -191,16 +191,16 @@
   <div class="section-inner">
     <p class="section-eyebrow">TRY IT</p>
     <h2>Request a route.</h2>
-    <p class="tryit-sub">Pick a departure and destination port below. This is run manually on live NOAA data by
-    the Velum Tech team — not an instant automated result — so allow some time for a reply. You'll get the route
-    summary and chart back by email.</p>
+    <p class="tryit-sub">Pick a departure and destination port below, or enter your current position if you're
+    already underway. This is run manually on live NOAA data by the Velum Tech team — not an instant automated
+    result — so allow some time for a reply. You'll get the route summary and chart back by email.</p>
 
     <form id="tryit-form" action="https://formspree.io/f/xbgroabq" method="POST" class="tryit-form">
       <div class="tryit-row">
         <div class="tryit-field">
           <label for="departure">Departure port</label>
-          <select name="Departure Port" id="departure" required>
-            <option value="" disabled selected>Select a port</option>
+          <select name="Departure Port" id="departure">
+            <option value="" selected>Select a port (or enter current position below)</option>
             <option>Brownsville, TX (Brazos Santiago Pass)</option>
             <option>Corpus Christi, TX (Aransas Pass)</option>
             <option>Freeport, TX</option>
@@ -268,6 +268,16 @@
             <option>Portland, ME</option>
             <option>Bucksport/Searsport, ME (Penobscot Bay)</option>
           </select>
+        </div>
+      </div>
+      <div class="tryit-row tryit-row-latlong">
+        <div class="tryit-field">
+          <label for="current-lat">Current latitude (if not departing from a port)</label>
+          <input type="text" name="Current Latitude" id="current-lat" placeholder="e.g. 28.9012 N">
+        </div>
+        <div class="tryit-field">
+          <label for="current-long">Current longitude (if not departing from a port)</label>
+          <input type="text" name="Current Longitude" id="current-long" placeholder="e.g. 88.4321 W">
         </div>
       </div>
       <div class="tryit-now-row">
