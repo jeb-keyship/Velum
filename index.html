@@ -6,7 +6,8 @@
 <title>Velum Tech — Intelligent Ship Routing</title>
 <link rel="stylesheet" href="styles.css">
 <style>
-.tryit-field-coord label { display: block; margin-bottom: 0.5rem; }
+.tryit-field-coord label { display: block; margin-bottom: 0.35rem; }
+.tryit-coord-example { margin: 0 0 0.5rem 0; opacity: 0.65; font-size: 0.85rem; font-style: italic; }
 .tryit-coord-inputs { display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap; }
 .tryit-coord-inputs select {
   width: auto;
@@ -283,9 +284,10 @@
       <div class="tryit-row tryit-row-latlong">
         <div class="tryit-field tryit-field-coord">
           <label>Current latitude (if not departing from a port)</label>
+          <p class="tryit-coord-example">Example: 28°13.000'N</p>
           <div class="tryit-coord-inputs">
             <select name="Latitude Degrees" id="lat-deg" aria-label="Latitude degrees">
-              <option value="" selected>DD</option>
+              <option value="" selected>Degrees</option>
               <option>0</option>
               <option>1</option>
               <option>2</option>
@@ -516,9 +518,10 @@
         </div>
         <div class="tryit-field tryit-field-coord">
           <label>Current longitude (if not departing from a port)</label>
+          <p class="tryit-coord-example">Example: 092°52.900'W</p>
           <div class="tryit-coord-inputs">
             <select name="Longitude Degrees" id="long-deg" aria-label="Longitude degrees">
-              <option value="" selected>DDD</option>
+              <option value="" selected>Degrees</option>
               <option>0</option>
               <option>1</option>
               <option>2</option>
