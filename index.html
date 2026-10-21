@@ -78,6 +78,9 @@
   .stat b{display:block;font-size:clamp(32px,4vw,42px);letter-spacing:-.03em;color:var(--good);
     font-variant-numeric:tabular-nums;line-height:1.1}
   .stat span{display:block;color:var(--dim);font-size:15px;margin-top:8px;line-height:1.4}
+  .value{margin-top:16px;border-radius:16px;padding:20px 24px;font-size:17px;color:var(--ink);
+    background:linear-gradient(90deg,rgba(255,145,66,.14),rgba(79,209,255,.08));border:1px solid rgba(255,145,66,.35)}
+  .value b{color:var(--good);font-size:20px}
   .mini{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
   @media (max-width:860px){.mini{grid-template-columns:1fr}}
   .mini div{border:1px solid var(--line);border-radius:16px;padding:18px 22px;color:var(--dim);font-size:15px;text-align:left}
@@ -161,16 +164,19 @@
     <div class="stats">
       <div class="stat"><b>85/93</b><span>voyages where Velum's route was faster</span></div>
       <div class="stat"><b>3.9%</b><span>less time and fuel per voyage</span></div>
-      <div class="stat"><b>2.6 t</b><span>marine diesel saved per voyage</span></div>
-      <div class="stat"><b>~$220k</b><span>saved a year, one ship</span></div>
+      <div class="stat"><b>6.6 days</b><span>of ship time saved a year</span></div>
+      <div class="stat"><b>~$220k</b><span>in fuel saved a year</span></div>
     </div>
+    <div class="value"><b>≈ $710,000 a year</b> for one ship: about $220k of fuel plus 6.6 days of
+      vessel time, worth about $490k at a $75,000/day charter rate.</div>
     <div class="mini">
       <div><strong>Forecast beat "no current"</strong> on 93 of 98 voyages, checked against the ship's hourly ECDIS fixes</div>
       <div><strong>Arrival times within 2%</strong> on a typical voyage, after the first day at sea</div>
       <div><strong>Fuel within 3.8%</strong> once calibrated to the ship's noon reports</div>
     </div>
-    <p class="fine">About 155 t of diesel and 495 t of CO₂ a year. Diesel at ~$1,400/t (Gulf Coast,
-      October 2026). Vessel and operator not named.</p>
+    <p class="fine">About 2.6 t of marine diesel per voyage: 155 t of diesel and 495 t of CO₂ a year.
+      Diesel at ~$1,400/t (Gulf Coast, October 2026). The $75,000/day charter rate is an example;
+      saved time pays when the ship's next fixture can use it. Vessel and operator not named.</p>
   </section>
 
   <section id="how">
