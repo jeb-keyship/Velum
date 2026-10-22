@@ -116,6 +116,16 @@
   label{display:block;font-size:13px;font-weight:500;color:var(--dim);margin-bottom:6px}
   input,select{width:100%;background:var(--bg);border:1px solid var(--line);color:var(--ink);
     padding:12px 14px;border-radius:12px;font:inherit;font-size:15px}
+  textarea{width:100%;background:var(--bg);border:1px solid var(--line);color:var(--ink);
+    padding:12px 14px;border-radius:12px;font:inherit;font-size:15px;resize:vertical}
+  .hp{position:absolute;left:-5000px;width:1px;height:1px;opacity:0}
+  .steps{margin:6px 0 24px;padding-left:22px;color:var(--dim)}
+  .steps li{margin:8px 0}
+  .steps b{color:var(--ink);font-weight:600}
+  .dl{margin-top:4px}
+  .privacy.ok{color:var(--good)}
+  .privacy.err{color:#ff7a7a}
+  button.btn:disabled{opacity:.6;cursor:wait}
   .privacy{font-size:13px;color:var(--mute);margin:4px 0 0}
 
   /* about */
@@ -230,32 +240,43 @@
       <div>
         <span class="kicker">Free analysis</span>
         <h2>See what the currents cost you.</h2>
-        <p>Send your last 12 months of voyages. We re-run them on the currents that were
-          really there and send back the hours, fuel and CII band you could have had.
-          No integration, no install.</p>
+        <p>We re-run your last 12 months of voyages on the currents that were really there
+          and send back the hours, fuel and CII band you could have had. No integration,
+          no install.</p>
+        <ol class="steps">
+          <li><b>Tell us about your fleet</b> with the form.</li>
+          <li><b>Fill in the ship data intake</b>, about 15 minutes per vessel.</li>
+          <li><b>Email it to us</b> with the noon reports and ECDIS position log. The
+            intake lists exactly what to send.</li>
+        </ol>
+        <a class="btn ghost dl" href="Velum_Ship_Intake_Fillable.pdf" download>Download the ship data intake (PDF)</a>
       </div>
-      <form>
+      <form id="lead" action="https://formspree.io/f/xbgroabq" method="POST">
+        <input type="hidden" name="_subject" value="New Velum backtest request">
+        <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
         <div class="row2">
-          <div><label for="from">Load port</label>
-            <select id="from"><option>Sabine Pass / Port Arthur, TX</option>
-              <option>Galveston / Houston, TX</option><option>New Orleans, LA</option>
-              <option>Miami, FL</option></select></div>
-          <div><label for="to">Discharge port</label>
-            <select id="to"><option>Port Everglades, FL</option>
-              <option>Philadelphia, PA</option><option>Norfolk, VA</option>
-              <option>Boston, MA</option></select></div>
-        </div>
-        <div class="row2">
-          <div><label for="dep">Departure (UTC)</label>
-            <input id="dep" type="datetime-local" value="2026-05-01T06:00"></div>
-          <div><label for="spd">Speed through water (kt)</label>
-            <input id="spd" type="number" value="13.6" step="0.1"></div>
+          <div><label for="nm">Your name</label>
+            <input id="nm" name="Name" autocomplete="name" required></div>
+          <div><label for="co">Company</label>
+            <input id="co" name="Company" autocomplete="organization" required></div>
         </div>
         <div><label for="em">Work email</label>
-          <input id="em" type="email" placeholder="you@company.com"></div>
-        <div><a class="btn" href="#backtest">Request the analysis</a></div>
-        <p class="privacy">Chart and summary emailed within one working day. We use your
-          address to send the result and nothing else.</p>
+          <input id="em" name="email" type="email" autocomplete="email" placeholder="you@company.com" required></div>
+        <div class="row2">
+          <div><label for="ty">Vessel type</label>
+            <select id="ty" name="Vessel type"><option>Product tanker</option>
+              <option>Chemical tanker</option><option>Crude tanker</option>
+              <option>ATB / tug-barge</option><option>Other</option></select></div>
+          <div><label for="nv">Number of vessels</label>
+            <input id="nv" name="Vessels" type="number" min="1" step="1" value="1"></div>
+        </div>
+        <div><label for="rt">Usual routes</label>
+          <input id="rt" name="Usual routes" placeholder="e.g. Houston to Port Everglades, Gulf to New York"></div>
+        <div><label for="ms">Anything else? (optional)</label>
+          <textarea id="ms" name="Message" rows="3"></textarea></div>
+        <div><button class="btn" id="send" type="submit">Request the analysis</button></div>
+        <p class="privacy" id="status" role="status">We reply within one working day. We use your
+          details to run your analysis and nothing else.</p>
       </form>
     </div>
   </section>
@@ -289,5 +310,26 @@
   <p>Velum Tech · <a href="mailto:jeb@velumtech.com">jeb@velumtech.com</a> · © 2026 Velum Tech. All rights reserved.</p>
 </div></footer>
 
+<script>
+(function(){
+  var f=document.getElementById('lead'),b=document.getElementById('send'),s=document.getElementById('status');
+  if(!f||!window.fetch)return;
+  f.addEventListener('submit',function(e){
+    e.preventDefault(); b.disabled=true; b.textContent='Sending…';
+    fetch(f.action,{method:'POST',body:new FormData(f),headers:{'Accept':'application/json'}})
+      .then(function(r){
+        if(!r.ok)throw new Error(r.status);
+        f.reset(); s.className='privacy ok';
+        s.innerHTML='Thanks, we have your request. Next: download the ship data intake above and email it to <a href="mailto:jeb@velumtech.com">jeb@velumtech.com</a> with the noon reports and ECDIS log.';
+        b.textContent='Sent';
+      })
+      .catch(function(){
+        s.className='privacy err';
+        s.innerHTML='That didn\'t send. Please email <a href="mailto:jeb@velumtech.com">jeb@velumtech.com</a> instead.';
+        b.disabled=false; b.textContent='Request the analysis';
+      });
+  });
+})();
+</script>
 </body>
 </html>
